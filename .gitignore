@@ -1,0 +1,7 @@
+*.DB
+csrc
+*.log
+simv*
+*.key
+*.fsdb
+work.lib++
