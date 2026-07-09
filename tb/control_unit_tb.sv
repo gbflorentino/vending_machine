@@ -7,7 +7,6 @@ module control_unit_tb;
   logic       confirm;
   logic       cancel;
   logic       can_sell;
-  logic [7:0] price;
 
   logic       credit_load;
   logic       mem_read;
@@ -29,7 +28,6 @@ module control_unit_tb;
     .confirm(confirm),
     .cancel(cancel),
     .can_sell(can_sell),
-    .price(price),
     .credit_load(credit_load),
     .mem_read(mem_read),
     .mem_write(mem_write),
@@ -88,7 +86,6 @@ module control_unit_tb;
         #1 $display("Credit_load=%b, State=%s", credit_load, get_state_name(state_debug));
       end
     end
-
 
     $display("\n--------------------");
     $display("   Normal flow        ");

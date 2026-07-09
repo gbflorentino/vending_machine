@@ -5,14 +5,15 @@ module control_unit(
   input  logic       confirm,
   input  logic       cancel,
   input  logic       can_sell,
-  input  logic [7:0] price,
 
   output logic       credit_load,
   output logic       mem_read,
   output logic       mem_write,
   output logic       dispense,
   output logic       error,
-  output logic [2:0] state_debug
+  output logic [2:0] state_debug,
+  output logic       credit_rst,
+  output logic       change_allow
 );
 
   import vending_pkg::*;
@@ -50,6 +51,8 @@ module control_unit(
       COLLECT: begin
         if (confirm)
           next_state <= CHECK;
+        else if (cancel)
+          next_state <= CHANGE;
         else
           next_state <= COLLECT;
       end
@@ -61,9 +64,10 @@ module control_unit(
           else
             next_state <= ERROR;
         end
-        else begin
+        else if (cancel)
+          next_state <= CHANGE;
+        else 
           next_state <= CHECK;
-        end 
       end
 
       DISPENSE: begin
@@ -91,6 +95,8 @@ module control_unit(
         mem_write       = 0;
         dispense        = 0;
         error           = 0;
+        credit_rst      = 1;
+        change_allow    = 0;
       end
 
       COLLECT: begin
@@ -99,6 +105,8 @@ module control_unit(
         mem_write       = 0;
         dispense        = 0;
         error           = 0;
+        credit_rst      = 0;
+        change_allow    = 0;
       end
 
       CHECK: begin
@@ -107,6 +115,8 @@ module control_unit(
         mem_write       = 0;
         dispense        = 0;
         error           = 0;
+        credit_rst      = 0;
+        change_allow    = 0;
       end
 
       DISPENSE: begin
@@ -115,14 +125,18 @@ module control_unit(
         mem_write       = 1;
         dispense        = 1;
         error           = 0;
+        credit_rst      = 0;
+        change_allow    = 0;
       end
 
       CHANGE: begin
-        credit_load     = 1;
+        credit_load     = 0;
         mem_read        = 0;
         mem_write       = 0;
         dispense        = 0;
         error           = 0;
+        credit_rst      = 1;
+        change_allow    = 1;
       end
 
       ERROR: begin 
@@ -131,6 +145,8 @@ module control_unit(
         mem_write       = 0;
         dispense        = 0;
         error           = 1;
+        credit_rst      = 1;
+        change_allow    = 1;
       end
     endcase
   end

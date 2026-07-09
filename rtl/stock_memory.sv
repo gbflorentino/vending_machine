@@ -17,28 +17,25 @@ module stock_memory(
       memory[2'd1] <= {8'h32, 8'h5};
       memory[2'd2] <= {8'h4B, 8'h3};
       memory[2'd3] <= {8'h64, 8'h2};
-      // Memory default output
-      price <= 8'd0;
-      stock <= 8'd0;
     end
     else begin
-      case ({mem_read, mem_write})
-        2'b01: begin
-          price <= 8'd0;
-          stock <= 8'd0;
-          // Ensure stock don't becomes negative
-          if (memory[addr][7:0] != 8'd0)
-            memory[addr] <= memory[addr] - 1;
-        end
-        2'b10: begin
-          price <= memory[addr][15:8];
-          stock <= memory[addr][7:0];
-        end
-        default: begin
-          price <= 8'd0;
-          stock <= 8'd0;
-        end
-      endcase
+      if (mem_write) begin
+        // Ensure stock don't becomes negative
+        if (memory[addr][7:0] != 8'd0)
+          memory[addr][7:0] <= memory[addr][7:0] - 8'd1;
+      end
     end
   end
+
+  always_ff @(posedge clk) begin
+    if (rst) begin
+      price <= 8'd0;
+      stock <= 8'd0;
+    end 
+    else if (mem_read) begin
+      price <= memory[addr][15:8];
+      stock <= memory[addr][7:0];
+    end
+  end
+
 endmodule

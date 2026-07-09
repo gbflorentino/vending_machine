@@ -6,7 +6,7 @@ module comparator(
 );
 
   always_comb begin
-    if ((credit >= price) & stock)
+    if ((credit >= price) && (stock > 0))
         can_sell = 1;
     else  
       can_sell=0;

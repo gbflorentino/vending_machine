@@ -12,7 +12,8 @@ RTL_FILES = \
 	$(RTL_DIR)/coin_bin_to_value.sv \
 	$(RTL_DIR)/cash_register.sv \
 	$(RTL_DIR)/stock_memory.sv \
-	$(RTL_DIR)/control_unit.sv 
+	$(RTL_DIR)/control_unit.sv \
+	$(RTL_DIR)/vending_top.sv 
 
 PKG_FILES = \
   $(RTL_DIR)/vending_pkg.sv
@@ -22,10 +23,11 @@ TB_FILES = \
 	$(TB_DIR)/subtractor_tb.sv \
 	$(TB_DIR)/cash_register_tb.sv \
 	$(TB_DIR)/stock_memory_tb.sv \
-	$(TB_DIR)/control_unit_tb.sv
+	$(TB_DIR)/control_unit_tb.sv \
+	$(TB_DIR)/vending_top_tb.sv \
 
 # Test Top-Module
-TEST_TOP_MODULE = control_unit_tb
+TEST_TOP_MODULE = vending_top_tb
 
 # Rules
 syntax:
