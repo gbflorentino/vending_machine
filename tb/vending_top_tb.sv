@@ -1,5 +1,6 @@
 module vending_top_tb;
   import vending_pkg::*;
+  import tb_utils_pkg::*;
 
   logic       clk;
   logic       rst;
@@ -47,7 +48,7 @@ module vending_top_tb;
 
   initial begin
     $fsdbDumpfile("waves.fsdb");
-    $fsdbDumpfile("vending_top_tb" , 0);
+    $fsdbDumpvars(0, vending_top_tb);
   end
 
   always begin
@@ -86,7 +87,6 @@ module vending_top_tb;
     $display("  Insuficient Funds   ");
     $display("--------------------  ");
 
-    clk      = 0;
     rst      = 1;
     coin_in  = 0;
     sel_item = 0;
@@ -115,7 +115,6 @@ module vending_top_tb;
     $display("  Purchase cancel     ");
     $display("--------------------  ");
 
-    clk      = 0;
     rst      = 1;
     coin_in  = 0;
     sel_item = 0;
@@ -142,7 +141,6 @@ module vending_top_tb;
     $display("    Stock Empty       ");
     $display("--------------------  ");
 
-    clk      = 0;
     rst      = 0;
     coin_in  = 0;
     sel_item = 0;

@@ -1,5 +1,6 @@
 module control_unit_tb;
   import vending_pkg::*;
+  import tb_utils_pkg::*;
 
   logic       clk;
   logic       rst;
@@ -15,12 +16,6 @@ module control_unit_tb;
   logic       error;
   logic [2:0] state_debug;
   
-  function automatic string get_state_name(input logic [2:0] state);
-    control_states current_state;
-    current_state = control_states'(state);
-    return current_state.name();
-  endfunction
-
   control_unit dut(
     .clk(clk),
     .rst(rst),

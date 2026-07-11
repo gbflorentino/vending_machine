@@ -6,3 +6,4 @@ simv*
 *.fsdb
 work.lib++
 *.swp
+*.db

@@ -12,10 +12,12 @@ module cash_register(
   coin_bin_to_value dut(.coin_in(coin_in), .coin_val(coin_val));
 
   always_ff @(posedge clk or posedge rst) begin
-    if (rst || credit_rst) 
+    if (rst) 
       credit <= 8'd0;
     else begin
-      if (credit_load)
+      if (credit_rst)
+        credit <= 8'd0;
+      else if (credit_load)
         credit <= credit + coin_val;
       else
         credit <= credit;

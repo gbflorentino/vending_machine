@@ -1,6 +1,7 @@
 # Directories
-RTL_DIR = rtl
-TB_DIR  = tb
+RTL_DIR   = rtl
+TB_DIR    = tb
+SYNTH_DIR = synth
 
 # Lib
 LIB = work
@@ -16,7 +17,8 @@ RTL_FILES = \
 	$(RTL_DIR)/vending_top.sv 
 
 PKG_FILES = \
-  $(RTL_DIR)/vending_pkg.sv
+  $(RTL_DIR)/vending_pkg.sv \
+	$(TB_DIR)/tb_utils_pkg.sv
 
 TB_FILES = \
 	$(TB_DIR)/comparator_tb.sv \
@@ -38,3 +40,43 @@ compile: syntax
 
 run: compile
 	./simv 
+
+wave: 
+	verdi -ssf waves.fsdb &
+
+synth:
+	dc_shell -f $(SYNTH_DIR)/synth.tcl
+
+clean_synth:
+	rm -rf \
+    $(SYNTH_DIR)/work \
+    $(SYNTH_DIR)/*.rpt \
+    $(SYNTH_DIR)/*.ddc \
+    $(SYNTH_DIR)/*.db \
+    $(SYNTH_DIR)/*_syn.v \
+		*.mr \
+		*.pvl \
+		*.syn \
+		*.svf \
+		work.lib++/ \
+		work++/ \
+		alib-52  \
+		cksum_dir  \
+		*.pvk \
+		work
+
+clean_sim:
+	rm -rf \
+    csrc \
+    simv* \
+    *.daidir \
+    novas* \
+    AN.DB \
+    ucli.key \
+    verdi* \
+    DVEfiles \
+    .vlogan* \
+    *.fsdb \
+    *.log
+
+clean: clean_sim clean_synth

@@ -43,110 +43,91 @@ module control_unit(
     case(state)
       IDLE: begin
         if (coin_in == 0) 
-          next_state <= IDLE;
+          next_state = IDLE;
         else 
-          next_state <= COLLECT;
+          next_state = COLLECT;
       end 
 
       COLLECT: begin
         if (confirm)
-          next_state <= CHECK;
+          next_state = CHECK;
         else if (cancel)
-          next_state <= CHANGE;
+          next_state = CHANGE;
         else
-          next_state <= COLLECT;
+          next_state = COLLECT;
       end
 
       CHECK: begin
         if (check_wait_flag == 1) begin
           if (can_sell) 
-            next_state <= DISPENSE;
+            next_state = DISPENSE;
           else
-            next_state <= ERROR;
+            next_state = ERROR;
         end
         else if (cancel)
-          next_state <= CHANGE;
+          next_state = CHANGE;
         else 
-          next_state <= CHECK;
+          next_state = CHECK;
       end
 
       DISPENSE: begin
-        next_state <= CHANGE;
+        next_state = CHANGE;
       end
 
       CHANGE: begin
-        next_state <= IDLE;
+        next_state = IDLE;
       end
 
       ERROR: begin
         if (cancel) 
-          next_state <= IDLE;
+          next_state = IDLE;
         else
-          next_state <= ERROR;
+          next_state = ERROR;
       end
+
+      default: begin
+        next_state = IDLE;
+      end
+
     endcase
   end
 
   always_comb begin
+    credit_load      = 0;
+    mem_read         = 0;
+    mem_write        = 0;
+    dispense         = 0;
+    error            = 0;
+    credit_rst       = 0;
+    change_allow     = 0;
+     
     case (state)
       IDLE: begin
-        credit_load     = 0;
-        mem_read        = 0;
-        mem_write       = 0;
-        dispense        = 0;
-        error           = 0;
-        credit_rst      = 1;
-        change_allow    = 0;
+        credit_rst   = 1;
       end
 
       COLLECT: begin
-        credit_load     = 1;
-        mem_read        = 0;
-        mem_write       = 0;
-        dispense        = 0;
-        error           = 0;
-        credit_rst      = 0;
-        change_allow    = 0;
+        credit_load  = 1;
       end
 
       CHECK: begin
-        credit_load     = 0;
-        mem_read        = 1;
-        mem_write       = 0;
-        dispense        = 0;
-        error           = 0;
-        credit_rst      = 0;
-        change_allow    = 0;
+        mem_read     = 1;
       end
 
       DISPENSE: begin
-        credit_load     = 0;
-        mem_read        = 0;
-        mem_write       = 1;
-        dispense        = 1;
-        error           = 0;
-        credit_rst      = 0;
-        change_allow    = 0;
+        mem_write    = 1;
+        dispense     = 1;
       end
 
       CHANGE: begin
-        credit_load     = 0;
-        mem_read        = 0;
-        mem_write       = 0;
-        dispense        = 0;
-        error           = 0;
-        credit_rst      = 1;
-        change_allow    = 1;
+        credit_rst   = 1;
+        change_allow = 1;
       end
 
       ERROR: begin 
-        credit_load     = 0;
-        mem_read        = 0;
-        mem_write       = 0;
-        dispense        = 0;
-        error           = 1;
-        credit_rst      = 1;
-        change_allow    = 1;
+        error        = 1;
+        credit_rst   = 1;
+        change_allow = 1;
       end
     endcase
   end
