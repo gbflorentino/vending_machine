@@ -23,19 +23,19 @@ check_design
 
 compile_ultra 
 
-redirect synth/area_pos.rpt {
+redirect synth/reports/area_pos.rpt {
   report_area -hierarchy
 }
 
-redirect synth/timing_relatorio.rpt {
+redirect synth/reports/timing_relatorio.rpt {
   report_timing -max_paths 10 -nosplit
 }
 
-redirect synth/power.rpt {
+redirect synth/reports/power.rpt {
   report_power
 }
 
-redirect synth/setup_violations.rpt {
+redirect synth/reports/setup_violations.rpt {
   report_constraint -all_violators
 }
 
